@@ -1,0 +1,46 @@
+name: test-snapd-cups-provider
+version: "1.0"
+
+# the go application is statically compiled, so we don't need a full base
+base: core18
+summary: cups-provider provides a cups socket to snaps
+description: cups-provider provides a cups socket to snaps
+grade: stable
+confinement: strict
+
+slots:
+  cups:
+    interface: cups
+    cups-socket: $SNAP_COMMON/cups.sock
+
+apps:
+  daemon:
+    daemon: simple
+    command: bin/server
+    plugs:
+      - network-bind
+      - network
+  bin:
+    command: bin.sh
+
+parts:
+  my-part:
+    plugin: dump
+    source: .
+    stage-packages:
+      - netcat-openbsd
+    prime:
+      - bin.sh
+  server:
+    # we want static builds
+    build-environment:
+      - CGO_ENABLED: "0"
+    plugin: go
+    source: .
+    # we override the build to do just the first step, the go plugin currently
+    # always will manually link the executables which forces the binaries to
+    # need libc, which we don't need if we set CGO_ENABLED=0
+    override-build: |
+      mkdir -p $SNAPCRAFT_PART_INSTALL/bin
+      cd $SNAPCRAFT_PART_SRC
+      go build -o $SNAPCRAFT_PART_INSTALL/bin/server main.go
