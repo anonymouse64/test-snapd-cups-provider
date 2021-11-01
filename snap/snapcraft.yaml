@@ -11,7 +11,7 @@ confinement: strict
 slots:
   cups:
     interface: cups
-    cups-socket: $SNAP_COMMON/cups.sock
+    cups-socket-dir: $SNAP_COMMON/
 
 apps:
   daemon:
