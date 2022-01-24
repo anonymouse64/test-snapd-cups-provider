@@ -9,6 +9,7 @@ grade: stable
 confinement: strict
 
 slots:
+  cups-control: {}
   cups:
     interface: cups
     cups-socket-dir: $SNAP_COMMON
