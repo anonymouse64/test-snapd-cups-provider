@@ -11,7 +11,18 @@ confinement: strict
 slots:
   cups:
     interface: cups
-    cups-socket-dir: $SNAP_COMMON/
+    cups-socket-dir: $SNAP_COMMON
+
+# this is copied from upstream cups snap to debug issues with mount namespaces
+layout:
+  /etc/fonts:
+    bind: $SNAP/etc/fonts
+  /usr/share/fonts:
+    bind: $SNAP/usr/share/fonts
+  /var/cache/fontconfig:
+    bind: $SNAP_DATA/var/cache/fontconfig
+  /etc/papersize:
+    bind-file: $SNAP_COMMON/etc/papersize
 
 apps:
   daemon:
