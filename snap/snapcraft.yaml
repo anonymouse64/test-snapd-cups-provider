@@ -1,7 +1,6 @@
 name: test-snapd-cups-provider
 version: "1.0"
 
-# the go application is statically compiled, so we don't need a full base
 base: core20
 summary: cups-provider provides a cups socket to snaps
 description: cups-provider provides a cups socket to snaps
@@ -32,7 +31,7 @@ apps:
     plugs:
       - network-bind
       - network
-  bin:
+  sh:
     command: bin.sh
 
 parts:
